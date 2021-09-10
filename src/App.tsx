@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {Counter} from "./components/scoreboard/scoreboard";
@@ -17,6 +17,24 @@ function App() {
     let [startValue, setStartValue] = useState<number>(0)
     let [count, setCount] = useState<number>(startValue)
 
+
+    useEffect(()=> {
+        let getCount = localStorage.getItem('counterValue')
+        let getMaxValue = localStorage.getItem('counterMaxValue')
+        let getStartValue = localStorage.getItem('counterStartValue')
+            if(getCount && getMaxValue && getStartValue) {
+                setCount(JSON.parse(getCount))
+                setMaxValue(JSON.parse(getMaxValue))
+                setStartValue(JSON.parse(getStartValue))
+            }
+    },[])
+
+
+    useEffect(() => {
+        localStorage.setItem('counterValue', JSON.stringify(count))
+        localStorage.setItem('counterStartValue', JSON.stringify(startValue))
+        localStorage.setItem('counterMaxValue', JSON.stringify(maxValue))
+    }, [count, startValue, maxValue]);
 
 
     function changeMaxValue(value:number) {
